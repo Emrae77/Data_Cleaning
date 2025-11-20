@@ -29,31 +29,5 @@ The goal is to:
   - fixes date formats
   - deletes unusable rows/columns
 
----
 
-## Tech Stack / Assumptions
 
-- SQL dialect: **MySQL 8+** (or compatible, e.g. MariaDB with window functions)
-- Database/schema name: `world_layoffs`
-- Raw table name: `world_layoffs.layoffs`
-
-The script uses:
-
-- `ROW_NUMBER() OVER (...)` window function  
-- CTEs (`WITH ... AS`)  
-- MySQL functions like `STR_TO_DATE`, `TRIM`, `UPDATE ... JOIN ...`
-
----
-
-## High-Level Cleaning Steps
-
-The cleaning process happens in **staging tables** so the raw data is never touched.
-
-### 1. Create a Staging Copy
-
-```sql
-CREATE TABLE world_layoffs.layoffs_staging 
-LIKE world_layoffs.layoffs;
-
-INSERT world_layoffs.layoffs_staging 
-SELECT * FROM world_layoffs.layoffs;
